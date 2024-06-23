@@ -1,0 +1,35 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-c",
+      "-I/opt/homebrew/opt/SDL3/lib/pkgconfig/../../include",
+      "-I",
+      "/opt/homebrew/opt/SDL3/include",
+      "-I",
+      "/opt/homebrew/Cellar/sdl2/2.30.4/include",
+      "-I",
+      "/opt/homebrew/opt/ncurses/include",
+      "-I",
+      "/opt/homebrew/opt/SDL3/include",
+      "-I",
+      "/opt/homebrew/Cellar/sdl2/2.30.4/include",
+      "-I",
+      "/opt/homebrew/opt/ncurses/include",
+      "-I",
+      "/opt/homebrew/opt/SDL3/include",
+      "-I",
+      "/opt/homebrew/Cellar/sdl2/2.30.4/include",
+      "-I",
+      "/opt/homebrew/opt/ncurses/include",
+      "-I",
+      ".",
+      "-o",
+      "bin",
+      "./main.c"
+    ],
+    "directory": "/Users/moritz/Repos/few_apps/app_sdl3_audio",
+    "file": "/Users/moritz/Repos/few_apps/app_sdl3_audio/main.c",
+    "output": "/Users/moritz/Repos/few_apps/app_sdl3_audio/bin"
+  }
+]
