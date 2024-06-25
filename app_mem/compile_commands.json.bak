@@ -1,0 +1,24 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-c",
+      "-Wall",
+      "-O0",
+      "-I",
+      "/Users/moritz/Libs/SDL3/include",
+      "-I",
+      "/opt/homebrew/Cellar/sdl2/2.30.4/include",
+      "-I",
+      "/opt/homebrew/opt/ncurses/include",
+      "-I",
+      ".",
+      "-o",
+      "a.out",
+      "./main.c"
+    ],
+    "directory": "/Users/moritz/Repos/few_apps/app_mem",
+    "file": "/Users/moritz/Repos/few_apps/app_mem/main.c",
+    "output": "/Users/moritz/Repos/few_apps/app_mem/a.out"
+  }
+]

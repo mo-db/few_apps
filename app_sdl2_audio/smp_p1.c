@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 	SDL_FreeWAV(wavbuf); // no longer in SDL3
 	SDL_PauseAudioDevice(audio_device, 0); // device start pause -> unpause like this
 	
-	SDL_Delay(5000);
+	SDL_Delay(20000);
 
 	SDL_CloseAudioDevice(audio_device);
 	SDL_Quit();
