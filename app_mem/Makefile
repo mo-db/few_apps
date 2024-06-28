@@ -1,11 +1,15 @@
-APP=main
+SRC=main
+BIN=./out/a.out
 OPT=-O0
-COMPFLAGS=-Wall -g $(OPT)
+COMPFLAGS=-Wall $(OPT)
 SDL2=`sdl2-config --libs --cflags`
 SDL3=`pkg-config --libs --cflags sdl3`
 
 build:
-	cc $(COMPFLAGS) ./$(APP).c -o a.out 
+	cc $(COMPFLAGS) ./$(SRC).c -o $(BIN)
+
+run:
+	$(BIN)
 
 clean:
-	rm a.out
+	rm $(BIN)

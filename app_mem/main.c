@@ -3,8 +3,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define STANDARD_BUF_SIZE 5 
-#define ITERATIONS 10000 
+#define STANDARD_BUF_SIZE 10
+#define MAX_BUF_SIZE 50
+#define ITERATIONS 10000
 
 
 // generate random float between 0 & 1,
@@ -34,6 +35,8 @@ int main()
 	int buf_expand_flag = 0;
 	int total = 0;
 
+	clock_t begin = clock();
+
 	for(int i = 0; i < ITERATIONS; i++) {
 		if (buf_expand_flag) {
 			buf_size = expand_buf(&fill_buf, buf_size);
@@ -57,12 +60,16 @@ int main()
 				buf_size = STANDARD_BUF_SIZE;
 			}
 		} 
-		if (get_prob() <= 0.05) {
+		if (get_prob() <= 0.2) {
 			buf_expand_flag = 1;
 		}
 	}
 
-	printf("Total: %d", total);
+	clock_t end = clock();
+	double time_spend = (double)(end - begin) / CLOCKS_PER_SEC;
+
+	printf("Total of all sums: %d\n", total);
+	printf("Time needed: %f\n", time_spend);
 	return 0;
 }
 
@@ -115,6 +122,9 @@ int expand_buf(int **buf_p, int buf_size)
 
 	printf("expanding buffer by %d sizes\n", rand_num);
 	int new_buf_size = buf_size + rand_num;
+	if (new_buf_size > MAX_BUF_SIZE) {
+		return buf_size;
+	}
 	printf("new buffer size: %d\n", new_buf_size);
 	*buf_p = realloc(*buf_p, (new_buf_size * sizeof(*buf_p)));
 
