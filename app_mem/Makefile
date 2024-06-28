@@ -1,6 +1,6 @@
 APP=main
 OPT=-O0
-COMPFLAGS=-Wall $(OPT)
+COMPFLAGS=-Wall -g $(OPT)
 SDL2=`sdl2-config --libs --cflags`
 SDL3=`pkg-config --libs --cflags sdl3`
 
