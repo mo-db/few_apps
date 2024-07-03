@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 #define STANDARD_BUF_SIZE 10
 #define MAX_BUF_SIZE 50
-#define ITERATIONS 10000
+#define ITERATIONS 100000000
 
 
 // generate random float between 0 & 1,
@@ -35,9 +36,10 @@ int main()
 	int buf_expand_flag = 0;
 	int total = 0;
 
-	clock_t begin = clock();
+	//clock_t begin = clock();
 
 	for(int i = 0; i < ITERATIONS; i++) {
+		clock_t begin = clock();
 		if (buf_expand_flag) {
 			buf_size = expand_buf(&fill_buf, buf_size);
 			buf_expand_flag = 0;
@@ -63,13 +65,21 @@ int main()
 		if (get_prob() <= 0.2) {
 			buf_expand_flag = 1;
 		}
+
+		clock_t end = clock();
+
+		double time_spend = (double)(end - begin) / CLOCKS_PER_SEC;
+		sleep(16.67 - time_spend);
+		printf("Time needed: %f\n", time_spend);
+		printf("Time neededsleep: %f\n", (16.67 - time_spend));
 	}
 
-	clock_t end = clock();
-	double time_spend = (double)(end - begin) / CLOCKS_PER_SEC;
+	//clock_t end = clock();
+	//double time_spend = (double)(end - begin) / CLOCKS_PER_SEC;
 
 	printf("Total of all sums: %d\n", total);
-	printf("Time needed: %f\n", time_spend);
+	//printf("Time needed: %f\n", time_spend);
+	sleep(30);
 	return 0;
 }
 

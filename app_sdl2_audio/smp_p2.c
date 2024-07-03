@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-
+#include <SDL2/SDL_events.h>
 
 // only when using gcc or clang set the noreturn attribute > indicate function will exit()
 #if defined(__GNUC__) || defined(__CLANG__)
@@ -18,6 +18,9 @@ static SDL_AudioDeviceID audio_device = 0;
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
+typedef struct myrect {
+	int x, y, w, h;
+} myrect;
 
 int main(int argc, char **argv)
 {
@@ -27,21 +30,60 @@ int main(int argc, char **argv)
 
 	// Video stuff
 	window = SDL_CreateWindow("Hello SDL!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, 0);
-
 	if (!window) {
 		panic_and_abort("SDL_CreateWindow failed!", SDL_GetError());
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, 0);
+	// SDL_RENDERER_PRESENTVSYNC -> will wait at present function to sync frames to display
+	// so the loop doesn't run at max cpu speed
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 	if (!renderer) {
 		panic_and_abort("SDL_CreateRenderer failed!", SDL_GetError());
 	}
 
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
+	int green = 0;
 
-	SDL_Delay(3000);
+	SDL_Rect rect_01 = { 50, 100, 300, 200 };
+
+	SDL_Event event;
+	int keep_going = 1;
+	while (keep_going) {
+		while (SDL_PollEvent(&event)) {
+			switch(event.type) {
+				case SDL_QUIT:
+					keep_going = 0;
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					if (event.button.x > rect_01.x &&
+						event.button.x < rect_01.w &&)
+
+			}
+		}
+		SDL_SetRenderDrawColor(renderer, 0, green, 0, 255);
+		SDL_RenderClear(renderer);
+
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_Rect rect;
+		rect.x = 0;
+		rect.y = 0;
+		rect.w = green;
+		rect.h = 100;
+
+		myrect mr;
+		mr.x = 200;
+		mr.y = 100;
+		mr.w = 200;
+		mr.h = green;
+
+
+		SDL_RenderFillRect(renderer, &mr);
+		SDL_RenderFillRect(renderer, &rect);
+		SDL_RenderPresent(renderer);
+
+
+		green = (green + 1) % 256;
+	}
+
 	SDL_Quit();
 	return 0;
 
@@ -53,6 +95,7 @@ int main(int argc, char **argv)
 	if (SDL_LoadWAV("CantinaBand60.wav", &wavspec, &wavbuf, &wavlen) == NULL) {
 		panic_and_abort("Couldn't load WAV file!", SDL_GetError());
 	}
+
 	// FIXME: use later!
     SDL_AudioSpec desired;
     SDL_zero(desired);
