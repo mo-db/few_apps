@@ -1,4 +1,4 @@
-SRC=smp_p2
+SRC=smp_p4test
 BIN=./out/a.out
 OPT=-O0
 override CFLAGS+=-Wall $(OPT)

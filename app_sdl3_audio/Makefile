@@ -1,4 +1,4 @@
-APP=main
+APP=test
 OPT=-O0
 CFLAGS=-Wall -g $(OPT)
 
