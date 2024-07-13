@@ -1,13 +1,43 @@
 #include <SDL3/SDL.h>
+#include <stdlib.h>
 #include <math.h>
 #define PI2 6.28318530718
 
+static struct {
+		
+}
+
+static void panic_and_abort(const char *title, const char *text)
+{/*{{{*/
+	fprintf(stderr, "PANIC: %s ... %s\n", title, text);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, text, NULL); // if window exists attach to window
+	SDL_Quit(); // It's allways save to call, even if not initialised before!
+	exit(1);
+}/*}}}*/
+
 int main(int argc, char **argv)
 {
-	int result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-	if (result < 0) {
-		SDL_Log("SDL_Init error: %s", SDL_GetError());
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
+		panic_and_abort("SDL_Init error!", SDL_GetError());
 	}
+
+	// Video stuff
+	window = SDL_CreateWindow("Hello SDL!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640);
+	if (!window) {
+		panic_and_abort("SDL_CreateWindow failed!", SDL_GetError());
+	}
+
+	// SDL_RENDERER_PRESENTVSYNC -> will wait at present function to sync frames to display
+	// so the loop doesn't run at max cpu speed
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+	if (!renderer) {
+		panic_and_abort("SDL_CreateRenderer failed!", SDL_GetError());
+	}
+
+
+
+
+
 	SDL_AudioSpec wavspec;
 	Uint8 *wavbuf = NULL;
 	Uint32 wavlen = 0;
