@@ -1,12 +1,12 @@
-SRC=ai2
+SRC=test_surface
 BIN=./out/a.out
 OPT=-O0
-override CFLAGS+=-Wall $(OPT)
+override CFLAGS+=-Wall $(OPT) -g
 SDL2=`sdl2-config --libs --cflags`
 SDL3=`pkg-config --libs --cflags sdl3`
 
 build:
-	cc $(CFLAGS) ./$(SRC).c -o $(BIN) $(SDL2) -framework Cocoa
+	cc $(CFLAGS) ./$(SRC).c -o $(BIN) $(SDL2) -framework Metal
 
 run:
 	$(BIN)

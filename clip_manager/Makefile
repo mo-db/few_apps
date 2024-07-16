@@ -28,10 +28,10 @@ check_outdir:
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS) $(FRAMEWORKS)
 
-# Compile c source into objects
+# Compile c source into objects append header files to rebuild if changed
 $(OUT)%.o:$(SRC)%.c $(SRC)bridge.h
 	$(CC) $(CFLAGS) -c $< -o $@
-# Compile objective-c source into objects
+# Compile objective-c source into objects append header files to rebuild if changed
 $(OUT)%.o:$(SRC)%.m $(SRC)bridge.h
 	$(CC) $(CFLAGS) -c $< -o $@
 

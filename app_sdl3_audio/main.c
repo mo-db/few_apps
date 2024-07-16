@@ -1,11 +1,23 @@
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_video.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <math.h>
 #define PI2 6.28318530718
 
 static struct {
-		
-}
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+} init_sdl;
+
+static struct {
+	uint32_t accum;
+	uint32_t tick;
+	float fixed_dt;
+} state;
+
+
+static int generate_sine();
 
 static void panic_and_abort(const char *title, const char *text)
 {/*{{{*/
@@ -15,80 +27,43 @@ static void panic_and_abort(const char *title, const char *text)
 	exit(1);
 }/*}}}*/
 
+
 int main(int argc, char **argv)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
 		panic_and_abort("SDL_Init error!", SDL_GetError());
 	}
 
-	// Video stuff
-	window = SDL_CreateWindow("Hello SDL!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640);
-	if (!window) {
+	init_sdl.window = SDL_CreateWindow("Hello SDL!", 640, 480, SDL_WINDOW_METAL);
+	if (!init_sdl.window) {
 		panic_and_abort("SDL_CreateWindow failed!", SDL_GetError());
 	}
 
-	// SDL_RENDERER_PRESENTVSYNC -> will wait at present function to sync frames to display
-	// so the loop doesn't run at max cpu speed
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
-	if (!renderer) {
+	init_sdl.renderer = SDL_CreateRenderer(init_sdl.window, "renderer");
+	if (!init_sdl.renderer) {
 		panic_and_abort("SDL_CreateRenderer failed!", SDL_GetError());
 	}
 
-
-
-
-
-	SDL_AudioSpec wavspec;
-	Uint8 *wavbuf = NULL;
-	Uint32 wavlen = 0;
-	if (SDL_LoadWAV("CantinaBand60.wav", &wavspec, &wavbuf, &wavlen) > 0) {
-		fprintf(stderr, "coulndn't load wav file! %s", SDL_GetError());
-		SDL_Quit();
-		return 1;
-	}
-
-	const SDL_AudioSpec spec = { SDL_AUDIO_S16, 1, 44100 };
-	SDL_AudioStream *stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, NULL, NULL);
-
-
-
-	Sint8 buf[88200];
-	Uint32 buf_len = 0;
-	float freq = 59;
-	float time = 0;
-
-	buf_len = sizeof(buf);
-	for(int i = 0; i < buf_len; i++) {
-		buf[i] = 255.0/2.0 + (255.0/2.0 * sin(time));
-		if (buf[i] % 5 != 0) {
-			buf[i] /= 8;
+	uint8_t keep_going = 1;
+	while (keep_going) {
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			if ( event.type == SDL_EVENT_QUIT) {
+				keep_going = 0;
+			}
 		}
-		
-		time += freq * PI2 / 44100.0;
-		if(time >= PI2)
-			time -= PI2;
-
-		printf("%d, \n", buf[i]);
+		printf("test\n");
+		SDL_RenderPresent(init_sdl.renderer);
 	}
-	printf("len: %d", buf_len);
 
-
-
-
-
-	SDL_PutAudioStreamData(stream, buf, buf_len);
-	SDL_ResumeAudioDevice(SDL_GetAudioStreamDevice(stream));
-
-	SDL_Delay(5000);
-	//printf("test: %lu \n", sizeof(wavbuf));
-	//printf("wavspec: %us", wavspec.format);
-#if 0
-	for (int i = 0; i < wavlen; i += 3) {
-		printf("%d, %d, %d\n", wavbuf[i], wavbuf[i + 1], wavbuf[i + 2]);
-	}
-#endif
-
-	SDL_free(wavbuf);
+	SDL_DestroyWindow(init_sdl.window);
+	SDL_DestroyRenderer(init_sdl.renderer);
 	SDL_Quit();
 	return 0;
 }
+
+
+static int generate_sine() {
+	return 1;
+}
+
